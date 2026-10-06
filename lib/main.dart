@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:meu_perfil/screens/Preferences_screen.dart';
 import 'package:meu_perfil/screens/catalog_screen.dart';
-import 'package:meu_perfil/screens/perfil_screen.dart';
+import 'package:meu_perfil/screens/preferences_screen.dart';
+import 'package:meu_perfil/screens/register_screen.dart';
+
+// import 'package:meu_perfil/screens/perfil_screen.dart';
 
 //FUNÇÃO MAIN
-// Nossa Função de entrada da aplicação
+//Nossa Função de entrada da aplicação
 void main() {
   //Onde inicia aplicação flutter
   //Neste projeto, o primeiro widget será o MyApp.
@@ -41,10 +43,13 @@ class MyApp extends StatelessWidget {
       // home: const PerfilScreen(),
 
       // Nova tela de catalogo
-      //home: const CatalogScreen(),
+      // home: const CatalogScreen(),
+
+      //Nova tela de prefrencias
+      //home: const PreferencesScreen(),
       
-      //Nova tela de preferencioas
-      home: const PreferencesScreen(),
+      //Nova tela de cadastro
+      home: const RegisterScreen(),
     );
   }
 }
