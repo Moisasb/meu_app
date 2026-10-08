@@ -10,19 +10,18 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  // Chave de formulário para validar os campos
+  //Chave do formulario
 
-  // GlobalKey é uma chave que permite acessar o estado de um widget em qualquer lugar do código, mesmo fora da árvore de widgets. Ela é útil para validar formulários, controlar animações e gerenciar estados complexos.
+  //GlobalKey é uma chave  que permite acesssar um Widget especifico e o estado associado a ele
 
-  // FormState é uma classe que representa o estado de um formulário. Ela fornece métodos para validar, salvar e resetar os campos do formulário. Através do FormState, podemos acessar os valores dos campos e verificar se eles são válidos.
+  //<FormState> informa que esta chave será utlizada para acessar este widget form
+  // O underline no inicio de _formKey indica, por ocnverção do Dart, que essa é uma variavel e privada para esse arquivo/biblioteca
 
-  // O underline (_) antes do nome da variável indica que ela é privada, ou seja, só pode ser acessada dentro da classe onde foi declarada.
-
-  // final indica que a variável não poderá receber outro valor depois de inicializada.
+  // final significa que a variavel não sera substituida por outra chave depois de criada
   final _formKey = GlobalKey<FormState>();
 
   // Guarda temporariamente a senha digitada
-  String senha = '';
+  String _senha = '';
 
   bool _ocultarSenha = true;
 
@@ -32,18 +31,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Cadastro')),
+
+      // Permite rolar o conteudo caso o formulario ultrapasse a altura disponivel
       body: SingleChildScrollView(
-        // Permite rolar o conteúdo da tela quando o teclado é exibido,
-        // evitando que os campos fiquem escondidos.
         child: Padding(
           padding: const EdgeInsets.all(16),
 
-          // Adiciona um espaçamento interno de 16 pixels em todos
-          // os lados do conteúdo da tela.
+          // Form agrupa os campos que pertence ao mesmo formulario
           child: Form(
-            // Key conectada ao formulário para validar os campos.
+            //Key conecta este form ao _formKey criado anteriormente
+            // assim podemos acessar o formState e executar as validações.
             key: _formKey,
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -54,33 +52,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 const SizedBox(height: 8),
 
-                const Text(
-                  'Preencha os dados abaixo para continuar',
-                  style: TextStyle(fontSize: 16),
-                ),
+                const Text('Preencha os dados abaixo para continuar'),
 
                 const SizedBox(height: 24),
 
-                // CAMPO DE NOME
+                // Campos serão adicionados aqui
+
+                // Campo do nome
                 TextFormField(
+                  // Configura a parte visual do campo
                   decoration: InputDecoration(
-                    labelText: 'Nome completo',
-                    // É parecido com placeholder.
+                    labelText: 'Nome Completo',
+                    // que é parecido com o placeholder
                     hintText: 'Digite seu nome',
                     prefixIcon: Icon(Icons.person),
                     border: OutlineInputBorder(),
                   ),
 
-                  // Validação do campo de nome
+                  // validator ele recebe uma função, que executa quando chamarmos o validate() no form
+
+                  // value é o nosso valor atual do campo
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Informe seu nome';
                     }
 
-                    // O método trim() remove espaços em branco
-                    // no início e no final da string.
                     if (value.trim().length < 3) {
-                      return 'Nome deve ter no mínimo 3 caracteres';
+                      return ' Digite pelo menos 3 caracteres.';
                     }
 
                     return null;
@@ -89,24 +87,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 const SizedBox(height: 16),
 
-                // CAMPO DE EMAIL
+                // Campo de email
                 TextFormField(
+                  // Configura a parte visual do campo
                   decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Digite seu email',
+                    labelText: 'E-mail',
+                    // que é parecido com o placeholder
+                    hintText: 'nome@exemplo.com',
                     prefixIcon: Icon(Icons.email),
                     border: OutlineInputBorder(),
                   ),
+
                   keyboardType: TextInputType.emailAddress,
 
+                  // validator ele recebe uma função, que executa quando chamarmos o validate() no form
+                  // value é o nosso valor atual do campo
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Informe seu email';
+                      return 'Informe seu  email';
                     }
 
-                    // Validação simples de email
                     if (!value.contains('@')) {
-                      return 'Informe um email válido';
+                      return ' Digite um e-mail valido';
                     }
 
                     return null;
@@ -115,22 +117,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 const SizedBox(height: 16),
 
-                // CAMPO DE SENHA
+                //Campo de senha
                 TextFormField(
-                  // obscureText: true, // Oculta o texto digitado
+                  // Configura a parte visual do campo
                   decoration: InputDecoration(
                     labelText: 'Senha',
-                    // é parecido com placeholder.
+                    // que é parecido com o placeholder
                     hintText: 'Digite sua senha',
                     prefixIcon: Icon(Icons.lock),
                     border: OutlineInputBorder(),
 
-                    // recebe um widget que será exibido no final do campo de texto, dentro da borda.
+                    // recebe um widget exibido no final do campo
+                    // usamos o IconButton para que o usuario possa tocar no icone
                     suffixIcon: IconButton(
+                      // operador  ternario escolhe qual icone sera exibido
                       icon: Icon(
                         _ocultarSenha ? Icons.visibility : Icons.visibility_off,
                       ),
-                    // O onPressed é um callback que será chamado quando o botão for pressionado.
+
+                      // executamos quando o usuario toca no botão
                       onPressed: () {
                         setState(() {
                           _ocultarSenha = !_ocultarSenha;
@@ -138,17 +143,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                     ),
                   ),
-                    // recebe um bool
-                    // true -> Oculta o texto digitado
-                    // false -> Exibe o texto digitado
+
+                  // recebe um bool
+                  // true -> esconde os caracteres
+                  // false -> mostra os caracteres
+
+                  // como usamos a variavel _ocultarSenha, o comportamento muda quando tocamos no botão de visibilidade
                   obscureText: _ocultarSenha,
-                    // Como usamos a variavel _ocultarSenha para controlar a visibilidade da senha, precisamos atualizar o estado do widget quando o botão de visibilidade for pressionado. Para isso, usamos o setState(), que notifica o Flutter que o estado do widget mudou e que ele precisa ser reconstruído.   
-                  
-                    // O onChanged é um callback que será chamado sempre que o valor do campo mudar. Ele recebe o novo valor como parâmetro.
+
+                  // chamado a cada alteração no texto do campo
                   onChanged: (value) {
-                    // Atualiza a variável senha com o valor digitado
-                    senha = value;
+                    // guardamos a senha para compara-la posteriomente com a confirmação
+                    _senha = value;
                   },
+
+                  // validator ele recebe uma função, que executa quando chamarmos o validate() no form
+
+                  // value é o nosso valor atual do campo
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Informe uma senha';
+                    }
+
+                    if (value.length < 6) {
+                      return ' Use pelo menos 6 caracteres.';
+                    }
+
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 24),
+
+                // Botão cadastrar
+                SizedBox(
+                  // ocupa todo espaço disponivel
+                  width: double.infinity,
+
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // currentState acessa o estado  atual do form
+                      // ?. executa o validate() somente se o currentState não for null
+                      //?? false  vai usar o false caso o resultado seja null
+                      final fomularioValidado =
+                          _formKey.currentState?.validate() ?? false;
+
+                      // se todos os validators retornarem null, o validade() retorna true
+
+                      if (fomularioValidado) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Cadastro Validado com sucesso!'),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('Cadastrar'),
+                  ),
                 ),
               ],
             ),
